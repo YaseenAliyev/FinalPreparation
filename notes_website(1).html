@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .login-container h2 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #e31e24;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .logos {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .note-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .note-icon {
+            font-size: 2em;
+        }
+
+        .note-text {
+            flex: 1;
+        }
+
+        .note-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .note-desc {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logos {
+                gap: 30px;
+            }
+
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container" id="loginBox">
+        <h2>🔐 Login</h2>
+        <form id="loginForm" onsubmit="return false;">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="login-btn" onclick="checkLogin()">Login</button>
+            <p class="error-message" id="errorMsg">Invalid username or password!</p>
+        </form>
+    </div>
+
+    <div class="container" id="mainContent">
+        <div class="logos">
+            <img src="Qaradağ_Lökbatan_FK_loqo.png" alt="Qaradağ Lökbatan FK" class="logo">
+            <img src="Sumqayıt_FK_loqo.png" alt="Sumqayit FK" class="logo">
+            <img src="">
+        </div>
+        
+        <header>
+            <h1>Salam Çöpçülər</h1>
+            <p class="subtitle">Başlayaq inşallah?</p>
+        </header>
+
+        <div class="section">
+            <h2>Midterm Notes</h2>
+            <div class="notes-grid">
+                <a href="/Midterm-PDFs/Von Neumann architecture, Stored Programs Idea.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Von Neumann Architecture</div>
+                        <div class="note-desc">Stored Programs Idea</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Information Systems(IS) and Computer based IS.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Information Systems</div>
+                        <div class="note-desc">IS and Computer-based IS</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Data and Information.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Data and Information</div>
+                        <div class="note-desc">Understanding the difference</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Define system, describe its components and their interaction.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Systems</div>
+                        <div class="note-desc">Components & Interaction</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Semantics vs Syntax.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Semantics vs Syntax</div>
+                        <div class="note-desc">Programming Languages</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Proprietary vs Off-the-Shelf.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Software Types</div>
+                        <div class="note-desc">Proprietary vs Off-the-Shelf</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Types of Systems Software.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Systems Software</div>
+                        <div class="note-desc">Operating Systems & More</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Algorithmic Actions.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Algorithmic Actions</div>
+                        <div class="note-desc">Control Flow Concepts</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Properties of Algorithm.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Properties of Algorithm</div>
+                        <div class="note-desc">5 Essential Properties</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Software And Algorithm.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Software & Algorithms</div>
+                        <div class="note-desc">Programs & Documentation</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Secondary Storage.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Secondary Storage</div>
+                        <div class="note-desc">HDD, SSD, and More</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Random Access Memory (RAM).pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">RAM</div>
+                        <div class="note-desc">Memory Types & Cache</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Central Processing Unit (C.P.U).pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">CPU</div>
+                        <div class="note-desc">Central Processing Unit</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Two's Complement.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Two's Complement</div>
+                        <div class="note-desc">Binary Arithmetic</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Logical Operations (NOT, AND, OR, XOR).pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Logical Operations</div>
+                        <div class="note-desc">NOT, AND, OR, XOR</div>
+                    </div>
+                </a>
+
+                <a href="/Midterm-PDFs/Bit, Byte, Binary encoding of integers.pdf" class="note-card">
+                    <span class="note-icon">📄</span>
+                    <div class="note-text">
+                        <div class="note-title">Bit & Byte</div>
+                        <div class="note-desc">Binary Encoding</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <footer> Gireceye Finall</p>
+        </footer>
+    </div>
+
+    <script>
+        function checkLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (username === 'copcu' && password === 'ramilinagzinisikim') {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                errorMsg.style.display = 'block';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkLogin();
+            }
+        });
+    </script>
+</body>
+</html>
